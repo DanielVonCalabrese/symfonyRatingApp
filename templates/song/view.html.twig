@@ -1,0 +1,46 @@
+{# templates/song/view.html.twig #}
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Rate a Song</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead text-center">
+                    <span class="font-weight-bold">{{ songRatingItem['song_name'] }}</span>
+                </p>
+                <p class="lead text-center">
+                    {% if hasVoted %}
+                        You have already voted for this song!
+                    {% else %}
+                        Rate it: 
+                        {% for i in 1..10 %}
+                            <a href="{{ path('/song/rate/', {songId: id, rating: i}) }}">{{ i }}</a>
+                        {% endfor %}
+                    {% endif %}
+                </p>
+                <p class="lead text-center">
+                    Overal Rating: <span class="font-weight-bold">{{ songRatingItem['overal_rating']|round(1, 'common')|number_format(1) }} / 10</span>
+                </p>
+                <p class="lead text-center mx-auto" style="width: 166px">
+                    <span class="rating-empty"></span>
+                    <span class="rating-full" style="width: {{ songRatingItem['overal_rating'] * 16 }}px !important;"></span>
+                </p>
+                <p class="lead text-center">
+                    Votes: <span class="font-weight-bold">{{ songRatingItem['votes'] }}</span>
+                </p>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                {% if songRatingItem['data'] %}
+                    {% for item in songRatingItem['data'] %}
+                        <span class="font-weight-bold">{{ item.userName }}( {{ item.email }} )</span> voted for this song with <span class="font-weight-bold">{{ item.rating_value }}</span> stars <br />
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
